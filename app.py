@@ -60,6 +60,32 @@ def _init_state():
 
 _init_state()
 
+
+def _apply_example():
+    st.session_state.po_description = EXAMPLE_DESCRIPTION
+
+
+def _clear_all():
+    st.session_state.po_description = ""
+    st.session_state.supplier = ""
+    st.session_state.last_result = None
+    st.session_state.last_classified_at = None
+    st.session_state.last_inputs = {"po_description": "", "supplier": ""}
+    st.session_state.history = []
+
+
+top_left, top_right = st.columns([2, 1], gap="large")
+with top_left:
+    st.subheader("Overview")
+    st.caption("Use a clear, specific description for the best classification.")
+with top_right:
+    st.subheader("Run Stats")
+    st.metric("Total runs", len(st.session_state.history))
+    last_run_label = st.session_state.last_classified_at or "No runs yet"
+    st.caption(f"Last run: {last_run_label}")
+
+st.divider()
+
 left_col, right_col = st.columns([2, 1], gap="large")
 
 with left_col:
@@ -68,8 +94,7 @@ with left_col:
     with helper_col:
         st.caption("Need an example? Insert one to see the expected level of detail.")
     with insert_col:
-        if st.button("Insert example"):
-            st.session_state.po_description = EXAMPLE_DESCRIPTION
+        st.button("Insert example", on_click=_apply_example)
 
     with st.form("classify_form"):
         po_description = st.text_area(
@@ -101,16 +126,7 @@ with left_col:
                 disabled=description_length < MIN_DESCRIPTION_CHARS,
             )
         with clear_col:
-            clear_clicked = st.form_submit_button("Clear")
-
-    if clear_clicked:
-        st.session_state.po_description = ""
-        st.session_state.supplier = ""
-        st.session_state.last_result = None
-        st.session_state.last_classified_at = None
-        st.session_state.last_inputs = {"po_description": "", "supplier": ""}
-        st.session_state.history = []
-        st.rerun()
+            st.form_submit_button("Clear", on_click=_clear_all)
 
     if classify_clicked:
         if len(po_description.strip()) < MIN_DESCRIPTION_CHARS:
@@ -187,5 +203,16 @@ else:
             st.text(st.session_state.last_result)
     else:
         st.json(parsed)
+        st.subheader("Summary")
+        st.table(
+            {
+                "Level": ["L1", "L2", "L3"],
+                "Category": [
+                    parsed.get("L1", NOT_SURE_VALUE),
+                    parsed.get("L2", NOT_SURE_VALUE),
+                    parsed.get("L3", NOT_SURE_VALUE),
+                ],
+            }
+        )
         st.code(json.dumps(parsed, indent=2), language="json")
         st.caption("Tip: use the copy icon in the code block to copy JSON quickly.")
