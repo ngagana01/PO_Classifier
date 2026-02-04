@@ -8,8 +8,128 @@ from claassifier import classify_po
 
 st.set_page_config(page_title="PO Category Classifier", layout="wide")
 
-st.title("PO L1-L2-L3 Classifier")
-st.caption("Describe the PO clearly. The model returns L1, L2, and L3 categories.")
+st.markdown(
+    """
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&family=Space+Grotesk:wght@500;600&display=swap');
+
+    :root {
+        --bg: #f6f8fb;
+        --card: #ffffff;
+        --ink: #1f2937;
+        --muted: #6b7280;
+        --accent: #0ea5a4;
+        --accent-soft: #e6f7f7;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+        --success: #10b981;
+        --border: #e5e7eb;
+    }
+
+    html, body, [class*="css"]  {
+        font-family: 'DM Sans', system-ui, -apple-system, Segoe UI, sans-serif;
+        color: var(--ink);
+    }
+
+    .stApp {
+        background: radial-gradient(1200px 600px at 10% -10%, #e0f2fe 0%, transparent 55%),
+                    radial-gradient(900px 500px at 100% 0%, #fef3c7 0%, transparent 50%),
+                    var(--bg);
+    }
+
+    .title-block h1 {
+        font-family: 'Space Grotesk', system-ui, -apple-system, Segoe UI, sans-serif;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        margin-bottom: 0.2rem;
+    }
+
+    .subtitle {
+        color: var(--muted);
+        font-size: 0.98rem;
+        margin-bottom: 1.2rem;
+    }
+
+    .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 1rem 1.2rem;
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+    }
+
+    .pill {
+        display: inline-block;
+        padding: 0.25rem 0.6rem;
+        border-radius: 999px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        background: var(--accent-soft);
+        color: var(--accent);
+    }
+
+    .metric-row {
+        display: flex;
+        gap: 0.8rem;
+        flex-wrap: wrap;
+    }
+
+    .metric {
+        background: #f9fafb;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 0.7rem 0.9rem;
+        min-width: 140px;
+    }
+
+    .metric h4 {
+        font-size: 0.8rem;
+        color: var(--muted);
+        margin: 0 0 0.2rem;
+    }
+
+    .metric div {
+        font-size: 1.2rem;
+        font-weight: 700;
+    }
+
+    .status-complete {
+        color: #065f46;
+        background: #d1fae5;
+        border: 1px solid #a7f3d0;
+        padding: 0.5rem 0.7rem;
+        border-radius: 10px;
+        font-weight: 600;
+    }
+
+    .status-review {
+        color: #92400e;
+        background: #fef3c7;
+        border: 1px solid #fde68a;
+        padding: 0.5rem 0.7rem;
+        border-radius: 10px;
+        font-weight: 600;
+    }
+
+    .section-title {
+        font-family: 'Space Grotesk', system-ui, -apple-system, Segoe UI, sans-serif;
+        font-weight: 600;
+        margin-bottom: 0.6rem;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+st.markdown(
+    """
+    <div class="title-block">
+        <h1>PO L1-L2-L3 Classifier</h1>
+        <div class="subtitle">Provide a clear description to get the most accurate category mapping.</div>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 
 EXAMPLE_DESCRIPTION = "Annual SaaS subscription for project management software"
 MIN_DESCRIPTION_CHARS = 20
@@ -76,20 +196,45 @@ def _clear_all():
 
 top_left, top_right = st.columns([2, 1], gap="large")
 with top_left:
-    st.subheader("Overview")
+    st.markdown('<div class="card">', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">Overview</div>', unsafe_allow_html=True)
     st.caption("Use a clear, specific description for the best classification.")
+    st.markdown(
+        """
+        <span class="pill">Tip</span>
+        <span style="margin-left: 0.4rem; color: #374151;">Mention the item, purpose, and key qualifiers.</span>
+        """,
+        unsafe_allow_html=True,
+    )
+    st.markdown("</div>", unsafe_allow_html=True)
 with top_right:
-    st.subheader("Run Stats")
-    st.metric("Total runs", len(st.session_state.history))
+    st.markdown('<div class="card">', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">Run Stats</div>', unsafe_allow_html=True)
     last_run_label = st.session_state.last_classified_at or "No runs yet"
-    st.caption(f"Last run: {last_run_label}")
+    st.markdown(
+        f"""
+        <div class="metric-row">
+            <div class="metric">
+                <h4>Total runs</h4>
+                <div>{len(st.session_state.history)}</div>
+            </div>
+            <div class="metric">
+                <h4>Last run</h4>
+                <div>{last_run_label}</div>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    st.markdown("</div>", unsafe_allow_html=True)
 
 st.divider()
 
 left_col, right_col = st.columns([2, 1], gap="large")
 
 with left_col:
-    st.subheader("Inputs")
+    st.markdown('<div class="card">', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">Inputs</div>', unsafe_allow_html=True)
     helper_col, insert_col = st.columns([4, 1])
     with helper_col:
         st.caption("Need an example? Insert one to see the expected level of detail.")
@@ -127,6 +272,7 @@ with left_col:
             )
         with clear_col:
             st.form_submit_button("Clear", on_click=_clear_all)
+    st.markdown("</div>", unsafe_allow_html=True)
 
     if classify_clicked:
         if len(po_description.strip()) < MIN_DESCRIPTION_CHARS:
@@ -157,7 +303,8 @@ with left_col:
                     )[:6]
 
 with right_col:
-    st.subheader("Status")
+    st.markdown('<div class="card">', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">Status</div>', unsafe_allow_html=True)
     if st.session_state.last_result is None:
         st.info("No runs yet. Submit a description to start.")
     else:
@@ -176,17 +323,18 @@ with right_col:
         else:
             not_sure_fields = _extract_not_sure_fields(parsed)
             if not_sure_fields:
-                st.error("Needs review")
+                st.markdown('<div class="status-review">Needs review</div>', unsafe_allow_html=True)
                 st.caption("Fields unsure: " + ", ".join(not_sure_fields))
             else:
-                st.success("Complete")
+                st.markdown('<div class="status-complete">Complete</div>', unsafe_allow_html=True)
 
-    st.subheader("Recent Runs")
+    st.markdown('<div class="section-title" style="margin-top: 1rem;">Recent Runs</div>', unsafe_allow_html=True)
     if st.session_state.history:
         for entry in st.session_state.history:
             st.write(f"{entry['timestamp']} - {entry['po_description']}")
     else:
         st.caption("History is empty.")
+    st.markdown("</div>", unsafe_allow_html=True)
 
 st.divider()
 
@@ -202,8 +350,8 @@ else:
         with st.expander("Show raw model output"):
             st.text(st.session_state.last_result)
     else:
-        st.json(parsed)
-        st.subheader("Summary")
+        st.markdown('<div class="card">', unsafe_allow_html=True)
+        st.markdown('<div class="section-title">Summary</div>', unsafe_allow_html=True)
         st.table(
             {
                 "Level": ["L1", "L2", "L3"],
@@ -214,5 +362,8 @@ else:
                 ],
             }
         )
+        st.markdown('<div class="section-title" style="margin-top: 1rem;">Raw JSON</div>', unsafe_allow_html=True)
+        st.json(parsed)
         st.code(json.dumps(parsed, indent=2), language="json")
         st.caption("Tip: use the copy icon in the code block to copy JSON quickly.")
+        st.markdown("</div>", unsafe_allow_html=True)
