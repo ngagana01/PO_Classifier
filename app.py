@@ -64,6 +64,13 @@ left_col, right_col = st.columns([2, 1], gap="large")
 
 with left_col:
     st.subheader("Inputs")
+    helper_col, insert_col = st.columns([4, 1])
+    with helper_col:
+        st.caption("Need an example? Insert one to see the expected level of detail.")
+    with insert_col:
+        if st.button("Insert example"):
+            st.session_state.po_description = EXAMPLE_DESCRIPTION
+
     with st.form("classify_form"):
         po_description = st.text_area(
             "PO Description",
@@ -86,14 +93,6 @@ with left_col:
             )
         else:
             st.caption(f"Characters: {description_length}/{MIN_DESCRIPTION_CHARS}. Looks good.")
-
-        helper_col, insert_col = st.columns([4, 1])
-        with helper_col:
-            st.caption("Need an example? Insert one to see the expected level of detail.")
-        with insert_col:
-            if st.form_submit_button("Insert example"):
-                st.session_state.po_description = EXAMPLE_DESCRIPTION
-                st.rerun()
 
         action_col, clear_col = st.columns([3, 1])
         with action_col:
