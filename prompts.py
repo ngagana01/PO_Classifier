@@ -1,4 +1,4 @@
-from taxonomy import TAXONOMY
+from taxonomy import TAXONOMY, TAXONOMY_VERSION
 SYSTEM_PROMPT = f"""
 You are an enterprise Purchase Order (PO) classification engine.
 
@@ -8,6 +8,7 @@ Your task:
 - Do NOT invent categories.
 - Do NOT mix categories from different rows.
 - If unclear, return "Not sure".
+- Use the exact category values as written in the taxonomy.
 - Output ONLY JSON. No explanations.
 
 STRICT OUTPUT FORMAT:
@@ -20,6 +21,8 @@ STRICT OUTPUT FORMAT:
 
 TAXONOMY:
 {TAXONOMY}
+
+TAXONOMY VERSION: {TAXONOMY_VERSION}
 
 FEW-SHOT EXAMPLES:
 
