@@ -8,9 +8,11 @@ client = Groq(
 MODEL="openai/gpt-oss-120b"
 def classify_po(po_description:str,Supplier:str="Not provided"):
   user_prompt = f"""
-  PO Description: {po_description}
-  Supplier: {Supplier}
-  """
+PO Description: 
+{po_description}
+Supplier: 
+{Supplier}
+"""
   Response = client.chat.completions.create(
     model="llama-3.1-8b-instant",
     temperature=0,
@@ -20,4 +22,5 @@ def classify_po(po_description:str,Supplier:str="Not provided"):
     ]
         
   )
+
   return Response.choices[0].message.content
