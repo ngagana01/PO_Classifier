@@ -3,6 +3,7 @@
 A Generative AI powered Purchase Order (PO) classification system that automatically maps PO descriptions into L1, L2, and L3 categories using a controlled enterprise taxonomy and an LLM (via Groq API).
 Built with Streamlit + LLM prompting + taxonomy grounding for consistent structured output.
 
+***
 
 # How It Works
 
@@ -17,6 +18,7 @@ Built with Streamlit + LLM prompting + taxonomy grounding for consistent structu
 
 - Results shown in Streamlit dashboard
   
+***
 
 # Features
 
@@ -29,14 +31,18 @@ Built with Streamlit + LLM prompting + taxonomy grounding for consistent structu
 
 - Example inputs
 
+***
 
 # Live Demo
+
+
 The application is deployed and accessible here:
 
-https://rag-with-multimodality.streamlit.app/
-  
+https://poclassifier-apdzrilabhb6zqmgp5c3xm.streamlit.app/
 
-#  Project Structure
+*** 
+
+##  Project Structure
 
 
 <pre> generativeai/
